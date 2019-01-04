@@ -17,7 +17,7 @@ rootProject.allprojects {
         google()
         jcenter()
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
+            url  "https://dl.bintray.com/terl/lazysodium-maven"
         }
     }
 }
@@ -37,5 +37,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.2-SNAPSHOT'
+    implementation "com.goterl.lazycode:lazysodium-android:3.5.0@aar"
+    implementation "net.java.dev.jna:jna:4.5.2@aar"
 }

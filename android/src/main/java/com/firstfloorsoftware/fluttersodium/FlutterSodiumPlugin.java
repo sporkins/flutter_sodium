@@ -6,12 +6,17 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import java.util.HashMap;
-import static org.libsodium.jni.NaCl.sodium;
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.goterl.lazycode.lazysodium.SodiumAndroid;
+import com.goterl.lazycode.lazysodium.interfaces.*;
+import com.sun.jna.NativeLong;
 
 /**
  * FlutterSodiumPlugin
  */
 public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
+    static LazySodiumAndroid _lazySodium = new LazySodiumAndroid(new SodiumAndroid());
+
     /**
      * Plugin registration.
      */
@@ -43,6 +48,11 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         } else {
             result.error("CryptoError", error.getMessage(), null);
         }
+    }
+
+    private static SodiumAndroid sodium()
+    {
+        return _lazySodium.getSodium();
     }
 
     public Object execute(MethodCall call) throws Exception {
@@ -97,8 +107,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
                 return crypto_box_open_easy(call);
             case "crypto_box_detached":
                 return crypto_box_detached(call);
-            case "crypto_box_open_detached":
-                return crypto_box_open_detached(call);
+            // case "crypto_box_open_detached":
+            //     return crypto_box_open_detached(call);
             case "crypto_box_beforenm":
                 return crypto_box_beforenm(call);
             case "crypto_box_easy_afternm":
@@ -115,33 +125,33 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
             case "crypto_box_seal_open":
                 return crypto_box_seal_open(call);
 
-            case "crypto_box_curve25519xchacha20poly1305_seed_keypair":
-                return crypto_box_curve25519xchacha20poly1305_seed_keypair(call);
-            case "crypto_box_curve25519xchacha20poly1305_keypair":
-                return crypto_box_curve25519xchacha20poly1305_keypair(call);
-            case "crypto_box_curve25519xchacha20poly1305_easy":
-                return crypto_box_curve25519xchacha20poly1305_easy(call);
-            case "crypto_box_curve25519xchacha20poly1305_open_easy":
-                return crypto_box_curve25519xchacha20poly1305_open_easy(call);
-            case "crypto_box_curve25519xchacha20poly1305_detached":
-                return crypto_box_curve25519xchacha20poly1305_detached(call);
-            case "crypto_box_curve25519xchacha20poly1305_open_detached":
-                return crypto_box_curve25519xchacha20poly1305_open_detached(call);
-            case "crypto_box_curve25519xchacha20poly1305_beforenm":
-                return crypto_box_curve25519xchacha20poly1305_beforenm(call);
-            case "crypto_box_curve25519xchacha20poly1305_easy_afternm":
-                return crypto_box_curve25519xchacha20poly1305_easy_afternm(call);
-            case "crypto_box_curve25519xchacha20poly1305_open_easy_afternm":
-                return crypto_box_curve25519xchacha20poly1305_open_easy_afternm(call);
-            case "crypto_box_curve25519xchacha20poly1305_detached_afternm":
-                return crypto_box_curve25519xchacha20poly1305_detached_afternm(call);
-            case "crypto_box_curve25519xchacha20poly1305_open_detached_afternm":
-                return crypto_box_curve25519xchacha20poly1305_open_detached_afternm(call);
+            // case "crypto_box_curve25519xchacha20poly1305_seed_keypair":
+            //     return crypto_box_curve25519xchacha20poly1305_seed_keypair(call);
+            // case "crypto_box_curve25519xchacha20poly1305_keypair":
+            //     return crypto_box_curve25519xchacha20poly1305_keypair(call);
+            // case "crypto_box_curve25519xchacha20poly1305_easy":
+            //     return crypto_box_curve25519xchacha20poly1305_easy(call);
+            // case "crypto_box_curve25519xchacha20poly1305_open_easy":
+            //     return crypto_box_curve25519xchacha20poly1305_open_easy(call);
+            // case "crypto_box_curve25519xchacha20poly1305_detached":
+            //     return crypto_box_curve25519xchacha20poly1305_detached(call);
+            // case "crypto_box_curve25519xchacha20poly1305_open_detached":
+            //     return crypto_box_curve25519xchacha20poly1305_open_detached(call);
+            // case "crypto_box_curve25519xchacha20poly1305_beforenm":
+            //     return crypto_box_curve25519xchacha20poly1305_beforenm(call);
+            // case "crypto_box_curve25519xchacha20poly1305_easy_afternm":
+            //     return crypto_box_curve25519xchacha20poly1305_easy_afternm(call);
+            // case "crypto_box_curve25519xchacha20poly1305_open_easy_afternm":
+            //     return crypto_box_curve25519xchacha20poly1305_open_easy_afternm(call);
+            // case "crypto_box_curve25519xchacha20poly1305_detached_afternm":
+            //     return crypto_box_curve25519xchacha20poly1305_detached_afternm(call);
+            // case "crypto_box_curve25519xchacha20poly1305_open_detached_afternm":
+            //     return crypto_box_curve25519xchacha20poly1305_open_detached_afternm(call);
 
-            case "crypto_box_curve25519xchacha20poly1305_seal":
-                return crypto_box_curve25519xchacha20poly1305_seal(call);
-            case "crypto_box_curve25519xchacha20poly1305_seal_open":
-                return crypto_box_curve25519xchacha20poly1305_seal_open(call);
+            // case "crypto_box_curve25519xchacha20poly1305_seal":
+            //     return crypto_box_curve25519xchacha20poly1305_seal(call);
+            // case "crypto_box_curve25519xchacha20poly1305_seal_open":
+            //     return crypto_box_curve25519xchacha20poly1305_seal_open(call);
 
             case "crypto_generichash":
                 return crypto_generichash(call);
@@ -168,18 +178,18 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
             case "crypto_kx_server_session_keys":
                 return crypto_kx_server_session_keys(call);
 
-            case "crypto_onetimeauth":
-                return crypto_onetimeauth(call);
-            case "crypto_onetimeauth_verify":
-                return crypto_onetimeauth_verify(call);
-            case "crypto_onetimeauth_init":
-                return crypto_onetimeauth_init(call);
-            case "crypto_onetimeauth_update":
-                return crypto_onetimeauth_update(call);
-            case "crypto_onetimeauth_final":
-                return crypto_onetimeauth_final(call);
-            case "crypto_onetimeauth_keygen":
-                return crypto_onetimeauth_keygen(call);
+            // case "crypto_onetimeauth":
+            //     return crypto_onetimeauth(call);
+            // case "crypto_onetimeauth_verify":
+            //     return crypto_onetimeauth_verify(call);
+            // case "crypto_onetimeauth_init":
+            //     return crypto_onetimeauth_init(call);
+            // case "crypto_onetimeauth_update":
+            //     return crypto_onetimeauth_update(call);
+            // case "crypto_onetimeauth_final":
+            //     return crypto_onetimeauth_final(call);
+            // case "crypto_onetimeauth_keygen":
+            //     return crypto_onetimeauth_keygen(call);
 
             case "crypto_pwhash":
                 return crypto_pwhash(call);
@@ -259,8 +269,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] ad = call.argument("ad");
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
-        byte[] c = new byte[m.length + sodium().crypto_aead_chacha20poly1305_abytes()];
-        int[] clen = new int[1];
+        byte[] c = new byte[m.length + AEAD.CHACHA20POLY1305_ABYTES];
+        long[] clen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -275,8 +285,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] ad = call.argument("ad");
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
-        byte[] m = new byte[c.length - sodium().crypto_aead_chacha20poly1305_abytes()];
-        int[] mlen = new int[1];
+        byte[] m = new byte[c.length - AEAD.CHACHA20POLY1305_ABYTES];
+        long[] mlen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -292,8 +302,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
         byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_aead_chacha20poly1305_abytes()];
-        int[] maclen = new int[1];
+        byte[] mac = new byte[AEAD.CHACHA20POLY1305_ABYTES];
+        long[] maclen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -324,7 +334,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_aead_chacha20poly1305_keygen(MethodCall call) throws Exception {
-        byte[] k = new byte[sodium().crypto_aead_chacha20poly1305_keybytes()];
+        byte[] k = new byte[AEAD.CHACHA20POLY1305_KEYBYTES];
         sodium().crypto_aead_chacha20poly1305_keygen(k);
 
         return k;
@@ -335,8 +345,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] ad = call.argument("ad");
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
-        byte[] c = new byte[m.length + sodium().crypto_aead_chacha20poly1305_ietf_abytes()];
-        int[] clen = new int[1];
+        byte[] c = new byte[m.length + AEAD.CHACHA20POLY1305_IETF_ABYTES];
+        long[] clen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -351,8 +361,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] ad = call.argument("ad");
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
-        byte[] m = new byte[c.length - sodium().crypto_aead_chacha20poly1305_ietf_abytes()];
-        int[] mlen = new int[1];
+        byte[] m = new byte[c.length - AEAD.CHACHA20POLY1305_IETF_ABYTES];
+        long[] mlen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -368,8 +378,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
         byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_aead_chacha20poly1305_ietf_abytes()];
-        int[] maclen = new int[1];
+        byte[] mac = new byte[AEAD.CHACHA20POLY1305_IETF_ABYTES];
+        long[] maclen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -400,7 +410,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_aead_chacha20poly1305_ietf_keygen(MethodCall call) throws Exception {
-        byte[] k = new byte[sodium().crypto_aead_chacha20poly1305_ietf_keybytes()];
+        byte[] k = new byte[AEAD.CHACHA20POLY1305_IETF_KEYBYTES];
         sodium().crypto_aead_chacha20poly1305_ietf_keygen(k);
 
         return k;
@@ -411,8 +421,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] ad = call.argument("ad");
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
-        byte[] c = new byte[m.length + sodium().crypto_aead_xchacha20poly1305_ietf_abytes()];
-        int[] clen = new int[1];
+        byte[] c = new byte[m.length + AEAD.XCHACHA20POLY1305_IETF_ABYTES];
+        long[] clen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -427,8 +437,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] ad = call.argument("ad");
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
-        byte[] m = new byte[c.length - sodium().crypto_aead_xchacha20poly1305_ietf_abytes()];
-        int[] mlen = new int[1];
+        byte[] m = new byte[c.length - AEAD.XCHACHA20POLY1305_IETF_ABYTES];
+        long[] mlen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -444,8 +454,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] npub = call.argument("npub");
         byte[] k = call.argument("k");
         byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_aead_xchacha20poly1305_ietf_abytes()];
-        int[] maclen = new int[1];
+        byte[] mac = new byte[AEAD.XCHACHA20POLY1305_IETF_ABYTES];
+        long[] maclen = new long[1];
         if (ad == null) {
             ad = new byte[0];
         }
@@ -476,7 +486,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_aead_xchacha20poly1305_ietf_keygen(MethodCall call) throws Exception {
-        byte[] k = new byte[sodium().crypto_aead_xchacha20poly1305_ietf_keybytes()];
+        byte[] k = new byte[AEAD.XCHACHA20POLY1305_IETF_KEYBYTES];
         sodium().crypto_aead_xchacha20poly1305_ietf_keygen(k);
 
         return k;
@@ -485,7 +495,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     private Object crypto_auth(MethodCall call) throws Exception {
         byte[] in = call.argument("in");
         byte[] k = call.argument("k");
-        byte[] out = new byte[sodium().crypto_auth_bytes()];
+        byte[] out = new byte[Auth.BYTES];
 
         requireSuccess(sodium().crypto_auth(out, in, in.length, k));
 
@@ -503,17 +513,16 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_auth_keygen(MethodCall call) {
-        // FIXME: crypto_auth_keygen not implemented in libsodium-jni, falling back to randombytes_buf
-        byte[] k = new byte[sodium().crypto_auth_keybytes()];
-        sodium().randombytes_buf(k, k.length);
+        byte[] k = new byte[Auth.KEYBYTES];
+        sodium().crypto_auth_keygen(k);
 
         return k;
     }
 
     private Object crypto_box_seed_keypair(MethodCall call) throws Exception {
         byte[] seed = call.argument("seed");
-        byte[] pk = new byte[sodium().crypto_box_publickeybytes()];
-        byte[] sk = new byte[sodium().crypto_box_secretkeybytes()];
+        byte[] pk = new byte[Box.PUBLICKEYBYTES];
+        byte[] sk = new byte[Box.SECRETKEYBYTES];
 
         requireSuccess(sodium().crypto_box_seed_keypair(pk, sk, seed));
         HashMap map = new HashMap();
@@ -524,8 +533,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_box_keypair(MethodCall call) throws Exception {
-        byte[] pk = new byte[sodium().crypto_box_publickeybytes()];
-        byte[] sk = new byte[sodium().crypto_box_secretkeybytes()];
+        byte[] pk = new byte[Box.PUBLICKEYBYTES];
+        byte[] sk = new byte[Box.SECRETKEYBYTES];
 
         requireSuccess(sodium().crypto_box_keypair(pk, sk));
         HashMap map = new HashMap();
@@ -540,7 +549,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] n = call.argument("n");
         byte[] pk = call.argument("pk");
         byte[] sk = call.argument("sk");
-        byte[] c = new byte[sodium().crypto_box_macbytes() + m.length];
+        byte[] c = new byte[Box.MACBYTES + m.length];
 
         requireSuccess(sodium().crypto_box_easy(c, m, m.length, n, pk, sk));
 
@@ -552,7 +561,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] n = call.argument("n");
         byte[] pk = call.argument("pk");
         byte[] sk = call.argument("sk");
-        byte[] m = new byte[c.length - sodium().crypto_box_macbytes()];
+        byte[] m = new byte[c.length - Box.MACBYTES];
 
         requireSuccess(sodium().crypto_box_open_easy(m, c, c.length, n, pk, sk));
 
@@ -566,7 +575,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] sk = call.argument("sk");
 
         byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_box_macbytes()];
+        byte[] mac = new byte[Box.MACBYTES];
 
         requireSuccess(sodium().crypto_box_detached(c, mac, m, m.length, n, pk, sk));
 
@@ -577,25 +586,25 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         return map;
     }
 
-    private Object crypto_box_open_detached(MethodCall call) throws Exception {
-        byte[] c = call.argument("c");
-        byte[] mac = call.argument("mac");
-        byte[] n = call.argument("n");
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
+    // private Object crypto_box_open_detached(MethodCall call) throws Exception {
+    //     byte[] c = call.argument("c");
+    //     byte[] mac = call.argument("mac");
+    //     byte[] n = call.argument("n");
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
 
-        byte[] m = new byte[c.length];
+    //     byte[] m = new byte[c.length];
 
-        requireSuccess(sodium().crypto_box_open_detached(m, c, mac, c.length, n, pk, sk));
+    //     requireSuccess(sodium().crypto_box_open_detached(m, c, mac, c.length, n, pk, sk));
 
-        return m;
-    }
+    //     return m;
+    // }
 
     private Object crypto_box_beforenm(MethodCall call) throws Exception {
         byte[] pk = call.argument("pk");
         byte[] sk = call.argument("sk");
 
-        byte[] k = new byte[sodium().crypto_box_beforenmbytes()];
+        byte[] k = new byte[Box.BEFORENMBYTES];
 
         requireSuccess(sodium().crypto_box_beforenm(k, pk, sk));
 
@@ -606,7 +615,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] m = call.argument("m");
         byte[] n = call.argument("n");
         byte[] k = call.argument("k");
-        byte[] c = new byte[sodium().crypto_box_macbytes() + m.length];
+        byte[] c = new byte[Box.MACBYTES + m.length];
 
         requireSuccess(sodium().crypto_box_easy_afternm(c, m, m.length, n, k));
 
@@ -617,7 +626,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] c = call.argument("c");
         byte[] n = call.argument("n");
         byte[] k = call.argument("k");
-        byte[] m = new byte[c.length - sodium().crypto_box_macbytes()];
+        byte[] m = new byte[c.length - Box.MACBYTES];
 
         requireSuccess(sodium().crypto_box_open_easy_afternm(m, c, c.length, n, k));
 
@@ -630,7 +639,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] k = call.argument("k");
 
         byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_box_macbytes()];
+        byte[] mac = new byte[Box.MACBYTES];
 
         requireSuccess(sodium().crypto_box_detached_afternm(c, mac, m, m.length, n, k));
 
@@ -658,7 +667,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] m = call.argument("m");
         byte[] pk = call.argument("pk");
 
-        byte[] c = new byte[sodium().crypto_box_sealbytes() + m.length];
+        byte[] c = new byte[Box.SEALBYTES + m.length];
 
         requireSuccess(sodium().crypto_box_seal(c, m, m.length, pk));
 
@@ -670,179 +679,179 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] pk = call.argument("pk");
         byte[] sk = call.argument("sk");
 
-        byte[] m = new byte[c.length - sodium().crypto_box_sealbytes()];
+        byte[] m = new byte[c.length - Box.SEALBYTES];
 
         requireSuccess(sodium().crypto_box_seal_open(m, c, c.length, pk, sk));
 
         return m;
     }
 
-    private Object crypto_box_curve25519xchacha20poly1305_seed_keypair(MethodCall call) throws Exception {
-        byte[] seed = call.argument("seed");
-        byte[] pk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_publickeybytes()];
-        byte[] sk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_secretkeybytes()];
+    // private Object crypto_box_curve25519xchacha20poly1305_seed_keypair(MethodCall call) throws Exception {
+    //     byte[] seed = call.argument("seed");
+    //     byte[] pk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_publickeybytes()];
+    //     byte[] sk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_secretkeybytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_seed_keypair(pk, sk, seed));
-        HashMap map = new HashMap();
-        map.put("pk", pk);
-        map.put("sk", sk);
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_seed_keypair(pk, sk, seed));
+    //     HashMap map = new HashMap();
+    //     map.put("pk", pk);
+    //     map.put("sk", sk);
 
-        return map;
-    }
+    //     return map;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_keypair(MethodCall call) throws Exception {
-        byte[] pk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_publickeybytes()];
-        byte[] sk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_secretkeybytes()];
+    // private Object crypto_box_curve25519xchacha20poly1305_keypair(MethodCall call) throws Exception {
+    //     byte[] pk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_publickeybytes()];
+    //     byte[] sk = new byte[sodium().crypto_box_curve25519xchacha20poly1305_secretkeybytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_keypair(pk, sk));
-        HashMap map = new HashMap();
-        map.put("pk", pk);
-        map.put("sk", sk);
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_keypair(pk, sk));
+    //     HashMap map = new HashMap();
+    //     map.put("pk", pk);
+    //     map.put("sk", sk);
 
-        return map;
-    }
+    //     return map;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_easy(MethodCall call) throws Exception {
-        byte[] m = call.argument("m");
-        byte[] n = call.argument("n");
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
-        byte[] c = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes() + m.length];
+    // private Object crypto_box_curve25519xchacha20poly1305_easy(MethodCall call) throws Exception {
+    //     byte[] m = call.argument("m");
+    //     byte[] n = call.argument("n");
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
+    //     byte[] c = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes() + m.length];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_easy(c, m, m.length, n, pk, sk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_easy(c, m, m.length, n, pk, sk));
 
-        return c;
-    }
+    //     return c;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_open_easy(MethodCall call) throws Exception {
-        byte[] c = call.argument("c");
-        byte[] n = call.argument("n");
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
-        byte[] m = new byte[c.length - sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
+    // private Object crypto_box_curve25519xchacha20poly1305_open_easy(MethodCall call) throws Exception {
+    //     byte[] c = call.argument("c");
+    //     byte[] n = call.argument("n");
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
+    //     byte[] m = new byte[c.length - sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_easy(m, c, c.length, n, pk, sk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_easy(m, c, c.length, n, pk, sk));
 
-        return m;
-    }
+    //     return m;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_detached(MethodCall call) throws Exception {
-        byte[] m = call.argument("m");
-        byte[] n = call.argument("n");
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
+    // private Object crypto_box_curve25519xchacha20poly1305_detached(MethodCall call) throws Exception {
+    //     byte[] m = call.argument("m");
+    //     byte[] n = call.argument("n");
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
 
-        byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
+    //     byte[] c = new byte[m.length];
+    //     byte[] mac = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_detached(c, mac, m, m.length, n, pk, sk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_detached(c, mac, m, m.length, n, pk, sk));
 
-        HashMap map = new HashMap();
-        map.put("c", c);
-        map.put("mac", mac);
+    //     HashMap map = new HashMap();
+    //     map.put("c", c);
+    //     map.put("mac", mac);
 
-        return map;
-    }
+    //     return map;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_open_detached(MethodCall call) throws Exception {
-        byte[] c = call.argument("c");
-        byte[] mac = call.argument("mac");
-        byte[] n = call.argument("n");
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
+    // private Object crypto_box_curve25519xchacha20poly1305_open_detached(MethodCall call) throws Exception {
+    //     byte[] c = call.argument("c");
+    //     byte[] mac = call.argument("mac");
+    //     byte[] n = call.argument("n");
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
 
-        byte[] m = new byte[c.length];
+    //     byte[] m = new byte[c.length];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_detached(m, c, mac, c.length, n, pk, sk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_detached(m, c, mac, c.length, n, pk, sk));
 
-        return m;
-    }
+    //     return m;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_beforenm(MethodCall call) throws Exception {
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
+    // private Object crypto_box_curve25519xchacha20poly1305_beforenm(MethodCall call) throws Exception {
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
 
-        byte[] k = new byte[sodium().crypto_box_curve25519xchacha20poly1305_beforenmbytes()];
+    //     byte[] k = new byte[sodium().crypto_box_curve25519xchacha20poly1305_beforenmbytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_beforenm(k, pk, sk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_beforenm(k, pk, sk));
 
-        return k;
-    }
+    //     return k;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_easy_afternm(MethodCall call) throws Exception {
-        byte[] m = call.argument("m");
-        byte[] n = call.argument("n");
-        byte[] k = call.argument("k");
-        byte[] c = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes() + m.length];
+    // private Object crypto_box_curve25519xchacha20poly1305_easy_afternm(MethodCall call) throws Exception {
+    //     byte[] m = call.argument("m");
+    //     byte[] n = call.argument("n");
+    //     byte[] k = call.argument("k");
+    //     byte[] c = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes() + m.length];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_easy_afternm(c, m, m.length, n, k));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_easy_afternm(c, m, m.length, n, k));
 
-        return c;
-    }
+    //     return c;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_open_easy_afternm(MethodCall call) throws Exception {
-        byte[] c = call.argument("c");
-        byte[] n = call.argument("n");
-        byte[] k = call.argument("k");
-        byte[] m = new byte[c.length - sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
+    // private Object crypto_box_curve25519xchacha20poly1305_open_easy_afternm(MethodCall call) throws Exception {
+    //     byte[] c = call.argument("c");
+    //     byte[] n = call.argument("n");
+    //     byte[] k = call.argument("k");
+    //     byte[] m = new byte[c.length - sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_easy_afternm(m, c, c.length, n, k));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_easy_afternm(m, c, c.length, n, k));
 
-        return m;
-    }
+    //     return m;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_detached_afternm(MethodCall call) throws Exception {
-        byte[] m = call.argument("m");
-        byte[] n = call.argument("n");
-        byte[] k = call.argument("k");
+    // private Object crypto_box_curve25519xchacha20poly1305_detached_afternm(MethodCall call) throws Exception {
+    //     byte[] m = call.argument("m");
+    //     byte[] n = call.argument("n");
+    //     byte[] k = call.argument("k");
 
-        byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
+    //     byte[] c = new byte[m.length];
+    //     byte[] mac = new byte[sodium().crypto_box_curve25519xchacha20poly1305_macbytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_detached_afternm(c, mac, m, m.length, n, k));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_detached_afternm(c, mac, m, m.length, n, k));
 
-        HashMap map = new HashMap();
-        map.put("c", c);
-        map.put("mac", mac);
+    //     HashMap map = new HashMap();
+    //     map.put("c", c);
+    //     map.put("mac", mac);
 
-        return map;
-    }
+    //     return map;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_open_detached_afternm(MethodCall call) throws Exception {
-        byte[] c = call.argument("c");
-        byte[] mac = call.argument("mac");
-        byte[] n = call.argument("n");
-        byte[] k = call.argument("k");
+    // private Object crypto_box_curve25519xchacha20poly1305_open_detached_afternm(MethodCall call) throws Exception {
+    //     byte[] c = call.argument("c");
+    //     byte[] mac = call.argument("mac");
+    //     byte[] n = call.argument("n");
+    //     byte[] k = call.argument("k");
 
-        byte[] m = new byte[c.length];
+    //     byte[] m = new byte[c.length];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_detached_afternm(m, c, mac, c.length, n, k));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_open_detached_afternm(m, c, mac, c.length, n, k));
 
-        return m;
-    }
+    //     return m;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_seal(MethodCall call) throws Exception {
-        byte[] m = call.argument("m");
-        byte[] pk = call.argument("pk");
+    // private Object crypto_box_curve25519xchacha20poly1305_seal(MethodCall call) throws Exception {
+    //     byte[] m = call.argument("m");
+    //     byte[] pk = call.argument("pk");
 
-        byte[] c = new byte[sodium().crypto_box_curve25519xchacha20poly1305_sealbytes() + m.length];
+    //     byte[] c = new byte[sodium().crypto_box_curve25519xchacha20poly1305_sealbytes() + m.length];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_seal(c, m, m.length, pk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_seal(c, m, m.length, pk));
 
-        return c;
-    }
+    //     return c;
+    // }
 
-    private Object crypto_box_curve25519xchacha20poly1305_seal_open(MethodCall call) throws Exception {
-        byte[] c = call.argument("c");
-        byte[] pk = call.argument("pk");
-        byte[] sk = call.argument("sk");
+    // private Object crypto_box_curve25519xchacha20poly1305_seal_open(MethodCall call) throws Exception {
+    //     byte[] c = call.argument("c");
+    //     byte[] pk = call.argument("pk");
+    //     byte[] sk = call.argument("sk");
 
-        byte[] m = new byte[c.length - sodium().crypto_box_curve25519xchacha20poly1305_sealbytes()];
+    //     byte[] m = new byte[c.length - sodium().crypto_box_curve25519xchacha20poly1305_sealbytes()];
 
-        requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_seal_open(m, c, c.length, pk, sk));
+    //     requireSuccess(sodium().crypto_box_curve25519xchacha20poly1305_seal_open(m, c, c.length, pk, sk));
 
-        return m;
-    }
+    //     return m;
+    // }
 
     private Object crypto_generichash(MethodCall call) throws Exception {
         int outlen = call.argument("outlen");
@@ -893,21 +902,29 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_generichash_keygen(MethodCall call) {
-        // FIXME: crypto_generichash_keygen not implemented in libsodium-jni, falling back to randombytes_buf
-        byte[] k = new byte[sodium().crypto_generichash_keybytes()];
-        sodium().randombytes_buf(k, k.length);
+        byte[] k = new byte[GenericHash.KEYBYTES];
+        sodium().crypto_generichash_keygen(k);
 
         return k;
     }
 
     private Object crypto_kdf_keygen(MethodCall call) {
-        // FIXME: crypto_kdf_keygen not implemented in libsodium-jni
-        throw new UnsupportedOperationException();
+        byte[] key = new byte[KeyDerivation.MASTER_KEY_BYTES];
+        sodium().crypto_kdf_keygen(key);
+
+        return key;
     }
 
-    private Object crypto_kdf_derive_from_key(MethodCall call) {
-        // FIXME: crypto_kdf_derive_from_key not implemented in libsodium-jni
-        throw new UnsupportedOperationException();
+    private Object crypto_kdf_derive_from_key(MethodCall call) throws Exception {
+        int subkey_len = call.argument("subkey_len");
+        int subkey_id = call.argument("subkey_id");
+        byte[] ctx = call.argument("ctx");
+        byte[] key = call.argument("key");
+
+        byte[] subkey = new byte[subkey_len];
+
+        requireSuccess(sodium().crypto_kdf_derive_from_key(subkey, subkey_len, subkey_id, ctx, key));
+        return subkey;
     }
 
     private Object crypto_kx_keypair(MethodCall call) throws Exception {
@@ -968,60 +985,59 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         return map;
     }
 
-    private Object crypto_onetimeauth(MethodCall call) throws Exception {
-        byte[] in = call.argument("in");
-        byte[] k = call.argument("k");
+    // private Object crypto_onetimeauth(MethodCall call) throws Exception {
+    //     byte[] in = call.argument("in");
+    //     byte[] k = call.argument("k");
 
-        byte[] out = new byte[sodium().crypto_onetimeauth_bytes()];
-        requireSuccess(sodium().crypto_onetimeauth(out, in, in.length, k));
+    //     byte[] out = new byte[sodium().crypto_onetimeauth_bytes()];
+    //     requireSuccess(sodium().crypto_onetimeauth(out, in, in.length, k));
 
-        return out;
-    }
+    //     return out;
+    // }
 
-    private Object crypto_onetimeauth_verify(MethodCall call) {
-        byte[] h = call.argument("h");
-        byte[] in = call.argument("in");
-        byte[] k = call.argument("k");
+    // private Object crypto_onetimeauth_verify(MethodCall call) {
+    //     byte[] h = call.argument("h");
+    //     byte[] in = call.argument("in");
+    //     byte[] k = call.argument("k");
 
-        int ret = sodium().crypto_onetimeauth_verify(h, in, in.length, k);
+    //     int ret = sodium().crypto_onetimeauth_verify(h, in, in.length, k);
 
-        return ret == 0;
-    }
+    //     return ret == 0;
+    // }
 
-    private Object crypto_onetimeauth_init(MethodCall call) throws Exception {
-        byte[] key = call.argument("key");
-        byte[] state = new byte[sodium().crypto_onetimeauth_statebytes()];
+    // private Object crypto_onetimeauth_init(MethodCall call) throws Exception {
+    //     byte[] key = call.argument("key");
+    //     byte[] state = new byte[sodium().crypto_onetimeauth_statebytes()];
 
-        requireSuccess(sodium().crypto_onetimeauth_init(state, key));
+    //     requireSuccess(sodium().crypto_onetimeauth_init(state, key));
 
-        return state;
-    }
+    //     return state;
+    // }
 
-    private Object crypto_onetimeauth_update(MethodCall call) throws Exception {
-        byte[] state = call.argument("state");
-        byte[] in = call.argument("in");
+    // private Object crypto_onetimeauth_update(MethodCall call) throws Exception {
+    //     byte[] state = call.argument("state");
+    //     byte[] in = call.argument("in");
 
-        requireSuccess(sodium().crypto_onetimeauth_update(state, in, in.length));
+    //     requireSuccess(sodium().crypto_onetimeauth_update(state, in, in.length));
 
-        return state;
-    }
+    //     return state;
+    // }
 
-    private Object crypto_onetimeauth_final(MethodCall call) throws Exception {
-        byte[] state = call.argument("state");
-        byte[] out = new byte[sodium().crypto_onetimeauth_bytes()];
+    // private Object crypto_onetimeauth_final(MethodCall call) throws Exception {
+    //     byte[] state = call.argument("state");
+    //     byte[] out = new byte[sodium().crypto_onetimeauth_bytes()];
 
-        requireSuccess(sodium().crypto_onetimeauth_final(state, out));
+    //     requireSuccess(sodium().crypto_onetimeauth_final(state, out));
 
-        return out;
-    }
+    //     return out;
+    // }
 
-    private Object crypto_onetimeauth_keygen(MethodCall call) {
-        // FIXME: crypto_onetimeauth_keygen not implemented in libsodium-jni, falling back to randombytes_buf
-        byte[] k = new byte[sodium().crypto_onetimeauth_keybytes()];
-        sodium().randombytes_buf(k, k.length);
+    // private Object crypto_onetimeauth_keygen(MethodCall call) {
+    //     byte[] k = new byte[sodium().crypto_onetimeauth_keybytes()];
+    //     sodium().crypto_onetimeauth_keygen(k);
 
-        return k;
-    }
+    //     return k;
+    // }
 
     private Object crypto_pwhash(MethodCall call) throws Exception {
         int outlen = call.argument("outlen");
@@ -1033,7 +1049,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
 
         byte[] out = new byte[outlen];
 
-        requireSuccess(sodium().crypto_pwhash(out, outlen, passwd, passwd.length, salt, opslimit, memlimit, alg));
+        requireSuccess(sodium().crypto_pwhash(out, outlen, passwd, passwd.length, salt, opslimit, new NativeLong(memlimit), alg));
 
         return out;
     }
@@ -1043,9 +1059,9 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         int opslimit = call.argument("opslimit");
         int memlimit = call.argument("memlimit");
 
-        byte[] out = new byte[sodium().crypto_pwhash_strbytes()];
+        byte[] out = new byte[PwHash.STR_BYTES];
 
-        requireSuccess(sodium().crypto_pwhash_str(out, passwd, passwd.length, opslimit, memlimit));
+        requireSuccess(sodium().crypto_pwhash_str(out, passwd, passwd.length, opslimit, new NativeLong(memlimit)));
 
         return out;
     }
@@ -1060,13 +1076,16 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_pwhash_str_needs_rehash(MethodCall call) throws Exception {
-        // FIXME: crypto_pwhash_str_needs_rehash not implemented in libsodium-jni
-        throw new UnsupportedOperationException();
+        byte[] str = call.argument("str");
+        int opslimit = call.argument("opslimit");
+        int memlimit = call.argument("memlimit");
+
+        return sodium().crypto_pwhash_str_needs_rehash(str, opslimit, new NativeLong(memlimit));
     }
 
     private Object crypto_scalarmult_base(MethodCall call) throws Exception {
         byte[] n = call.argument("n");
-        byte[] q = new byte[sodium().crypto_scalarmult_bytes()];
+        byte[] q = new byte[DiffieHellman.SCALARMULT_BYTES];
 
         requireSuccess(sodium().crypto_scalarmult_base(q, n));
 
@@ -1076,7 +1095,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     private Object crypto_scalarmult(MethodCall call) throws Exception {
         byte[] n = call.argument("n");
         byte[] p = call.argument("p");
-        byte[] q = new byte[sodium().crypto_scalarmult_bytes()];
+        byte[] q = new byte[DiffieHellman.SCALARMULT_BYTES];
 
         requireSuccess(sodium().crypto_scalarmult(q, n, p));
 
@@ -1087,7 +1106,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] m = call.argument("m");
         byte[] n = call.argument("n");
         byte[] k = call.argument("k");
-        byte[] c = new byte[sodium().crypto_secretbox_macbytes() + m.length];
+        byte[] c = new byte[SecretBox.MACBYTES + m.length];
 
         requireSuccess(sodium().crypto_secretbox_easy(c, m, m.length, n, k));
 
@@ -1098,7 +1117,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] c = call.argument("c");
         byte[] n = call.argument("n");
         byte[] k = call.argument("k");
-        byte[] m = new byte[c.length - sodium().crypto_secretbox_macbytes()];
+        byte[] m = new byte[c.length - SecretBox.MACBYTES];
 
         requireSuccess(sodium().crypto_secretbox_open_easy(m, c, c.length, n, k));
 
@@ -1110,7 +1129,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] n = call.argument("n");
         byte[] k = call.argument("k");
         byte[] c = new byte[m.length];
-        byte[] mac = new byte[sodium().crypto_secretbox_macbytes()];
+        byte[] mac = new byte[SecretBox.MACBYTES];
 
         requireSuccess(sodium().crypto_secretbox_detached(c, mac, m, m.length, n, k));
 
@@ -1134,9 +1153,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_secretbox_keygen(MethodCall call) {
-        // FIXME: crypto_secretbox_keygen not implemented in libsodium-jni, falling back to randombytes_buf
-        byte[] k = new byte[sodium().crypto_secretbox_keybytes()];
-        sodium().randombytes_buf(k, k.length);
+        byte[] k = new byte[SecretBox.KEYBYTES];
+        sodium().crypto_secretbox_keygen(k);
 
         return k;
     }
@@ -1145,7 +1163,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         byte[] in = call.argument("in");
         byte[] k = call.argument("k");
 
-        byte[] out = new byte[sodium().crypto_shorthash_bytes()];
+        byte[] out = new byte[ShortHash.BYTES];
 
         requireSuccess(sodium().crypto_shorthash(out, in, in.length, k));
 
@@ -1153,17 +1171,16 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_shorthash_keygen(MethodCall call) {
-        // FIXME: crypto_shorthash_keygen not implemented in libsodium-jni, falling back to randombytes_buf
-        byte[] k = new byte[sodium().crypto_shorthash_keybytes()];
-        sodium().randombytes_buf(k, k.length);
+        byte[] k = new byte[ShortHash.KEYBYTES];
+        sodium().crypto_shorthash_keygen(k);
 
         return k;
     }
 
     private Object crypto_sign_seed_keypair(MethodCall call) throws Exception {
         byte[] seed = call.argument("seed");
-        byte[] pk = new byte[sodium().crypto_sign_publickeybytes()];
-        byte[] sk = new byte[sodium().crypto_sign_secretkeybytes()];
+        byte[] pk = new byte[Sign.PUBLICKEYBYTES];
+        byte[] sk = new byte[Sign.SECRETKEYBYTES];
 
         requireSuccess(sodium().crypto_sign_seed_keypair(pk, sk, seed));
         HashMap map = new HashMap();
@@ -1174,8 +1191,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object crypto_sign_keypair(MethodCall call) throws Exception {
-        byte[] pk = new byte[sodium().crypto_sign_publickeybytes()];
-        byte[] sk = new byte[sodium().crypto_sign_secretkeybytes()];
+        byte[] pk = new byte[Sign.PUBLICKEYBYTES];
+        byte[] sk = new byte[Sign.SECRETKEYBYTES];
 
         requireSuccess(sodium().crypto_sign_keypair(pk, sk));
         HashMap map = new HashMap();
@@ -1188,8 +1205,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     private Object crypto_sign(MethodCall call) throws Exception {
         byte[] m = call.argument("m");
         byte[] sk = call.argument("sk");
-        byte[] sm = new byte[m.length + sodium().crypto_sign_bytes()];
-        int[] smlen = new int[1];
+        byte[] sm = new byte[m.length + Sign.BYTES];
+        long[] smlen = new long[1];
 
         requireSuccess(sodium().crypto_sign(sm, smlen, m, m.length, sk));
 
@@ -1199,8 +1216,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     private Object crypto_sign_open(MethodCall call) throws Exception {
         byte[] sm = call.argument("sm");
         byte[] pk = call.argument("pk");
-        byte[] m = new byte[sm.length - sodium().crypto_sign_bytes()];
-        int[] mlen = new int[1];
+        byte[] m = new byte[sm.length - Sign.BYTES];
+        long[] mlen = new long[1];
         requireSuccess(sodium().crypto_sign_open(m, mlen, sm, sm.length, pk));
 
         return m;
@@ -1209,8 +1226,8 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     private Object crypto_sign_detached(MethodCall call) throws Exception {
         byte[] m = call.argument("m");
         byte[] sk = call.argument("sk");
-        byte[] sig = new byte[sodium().crypto_sign_bytes()];
-        int[] siglen = new int[1];
+        byte[] sig = new byte[Sign.BYTES];
+        long[] siglen = new long[1];
 
         requireSuccess(sodium().crypto_sign_detached(sig, siglen, m, m.length, sk));
 
@@ -1229,9 +1246,9 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     private Object crypto_sign_init(MethodCall call) throws Exception {
         // byte[] state = new byte[sodium().crypto_sign_statebytes()];
         // requireSuccess(sodium().crypto_sign_init(state));
-        // result.success(state);
+        // return state;
 
-        // FIXME: crypto_sign_init not implemented in libsodium-jni
+        // FIXME: crypto_sign_init not implemented in LazySodium
         throw new UnsupportedOperationException();
     }
 
@@ -1239,9 +1256,9 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         // byte[] state = call.argument("state");
         // byte[] m = call.argument("m");
         // requireSuccess(sodium().crypto_sign_update(state, m, m.length));
-        // result.success(state);
+        // return state;
 
-        // FIXME: crypto_sign_update not implemented in libsodium-jni
+        // FIXME: crypto_sign_update not implemented in LazySodium
         throw new UnsupportedOperationException();
     }
 
@@ -1252,9 +1269,9 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         // int[] siglen = new int[1];
 
         // requireSuccess(sodium().crypto_sign_final_create(state, sig, siglen, sk));
-        // result.success(sig);
+        // return sig;
 
-        // FIXME: crypto_sign_final_create not implemented in libsodium-jni
+        // FIXME: crypto_sign_final_create not implemented in LazySodium
         throw new UnsupportedOperationException();
     }
 
@@ -1264,9 +1281,9 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
         // byte[] pk = call.argument("pk");
 
         // int ret = sodium().crypto_sign_final_verify(state, sig, pk);
-        // result.success(ret == 0);
+        // return ret == 0;
 
-        // FIXME: crypto_sign_final_verify not implemented in libsodium-jni
+        // FIXME: crypto_sign_final_verify not implemented in LazySodium
         throw new UnsupportedOperationException();
     }
 
@@ -1278,14 +1295,15 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object randombytes_buf_deterministic(MethodCall call) {
-        // FIXME: randombytes_buf_deterministic not implemented in libsodium-jni
-        throw new UnsupportedOperationException();
+        int size = call.argument("size");
+        byte[] seed = call.argument("seed");
+        byte[] buf = new byte[size];
+        sodium().randombytes_buf_deterministic(buf, size, seed);
+        return buf;
     }
 
     private Object randombytes_random(MethodCall call) {
-        int rnd = sodium().randombytes_random();
-        // convert result to unsigned long
-        return rnd & 0xFFFFFFFFL;
+        return sodium().randombytes_random();
     }
 
     private Object randombytes_uniform(MethodCall call) {
@@ -1294,7 +1312,7 @@ public class FlutterSodiumPlugin implements MethodCallHandler, CryptoTask {
     }
 
     private Object sodium_version_string(MethodCall call) {
-        // FIXME: sodium_version_string throws in libsodium-jni
+        // FIXME: sodium_version_string not implemented in LazySodium
         // for now version is hardcoded
         return "1.0.16";
     }
